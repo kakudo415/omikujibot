@@ -15,11 +15,11 @@ module.exports = (bot) => {
 
   bot.hear(/おみくじ/, (msg) => {
     const userID = msg.message.user.id;
-    // const result = bot.brain.get(userID);
-    // if (!result) {
-    let result = draw();
-    // bot.brain.set(userID, result);
-    // }
+    let result = bot.brain.get(userID);
+    if (!result) {
+      result = draw();
+      bot.brain.set(userID, result);
+    }
     msg.send(result);
   });
 };
