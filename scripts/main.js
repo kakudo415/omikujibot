@@ -2,7 +2,7 @@
 const poems = require("./poems").poems;
 
 module.exports = (bot) => {
-  bot.respond(/.*/, (msg) => {
+  bot.respond(/(へるぷ|ヘルプ|おしえて|教えて)/, (msg) => {
     msg.send({
       "attachments": [
         {
@@ -13,7 +13,7 @@ module.exports = (bot) => {
     });
   });
 
-  bot.hear(/おみくじ/, (msg) => {
+  bot.respond(/(ひく|引く)/, (msg) => {
     const userID = msg.message.user.id;
     let result = bot.brain.get(userID);
     if (!result) {
