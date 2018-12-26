@@ -26,12 +26,12 @@ module.exports = (bot) => {
 
   // 時刻つきで保存
   const brainSET = (key, value) => {
-    bot.brain.set(key, { "value": value, "time": new Date() });
+    bot.brain.set(`OMIKUJI:${key}`, { "value": value, "time": new Date() });
   };
 
   // GET from brain (今日以前のデータは削除)
   const brainGET = (key) => {
-    let value = bot.brain.get(key);
+    let value = bot.brain.get(`OMIKUJI:${key}`);
     if (!value || !value.time) {
       return null;
     }
