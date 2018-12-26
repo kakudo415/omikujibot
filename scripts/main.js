@@ -20,6 +20,7 @@ module.exports = (bot) => {
       result = draw();
       brainSET(userID, result);
     }
+    result.attachments[0].author_name = `${msg.message.user.slack.profile.display_name} さんのおみくじの結果`;
     msg.send(result);
   });
 
