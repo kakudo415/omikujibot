@@ -15,13 +15,37 @@ module.exports = (bot) => {
 
   bot.respond(/(ひく|引く)/, (msg) => {
     const userID = msg.message.user.id;
-    let result = bot.brain.get(userID);
+    let result = brainGET(userID);
     if (!result) {
       result = draw();
-      bot.brain.set(userID, result);
+      brainSET(userID, result);
     }
     msg.send(result);
   });
+
+  // 時刻つきで保存
+  const brainSET = (key, value) => {
+    bot.brain.set(key, { "value": value, "time": new Date() });
+  };
+
+  // GET from brain (今日以前のデータは削除)
+  const brainGET = (key) => {
+    let value = bot.brain.get(key);
+    if (!value || !value.time) {
+      return null;
+    }
+
+    let valueDate = new Date(value.time);
+    valueDate = new Date(valueDate.getFullYear(), valueDate.getMonth(), valueDate.getDate())
+    let today = new Date();
+    today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    if (valueDate < today) {
+      bot.brain.remove(key);
+      return null;
+    }
+    return value.value;
+  };
 };
 
 const draw = () => {
